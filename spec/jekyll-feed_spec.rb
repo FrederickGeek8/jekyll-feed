@@ -724,6 +724,37 @@ describe(JekyllFeed) do
         expect(contents).to_not match "This content should not be in feed.</content>"
       end
     end
+
+    context "when outlink is set" do
+      let(:overrides) do
+        { "feed" => { "excerpt_only"   => true,
+                      "read_more_text" => "Read more =>" } }
+      end
+
+      it "should be at the end of summary" do
+        expect(contents).to include 'Read more'
+      end
+    end
+
+    context "when read_more is not set" do
+      let(:overrides) do
+        { "feed" => { "excerpt_only" => true, } }
+      end
+
+      it "should be at the end of summary" do
+        expect(contents).to_not include '<a href'
+      end
+    end
+
+    context "when read_more and excerpt is not set" do
+      let(:overrides) do
+        { "feed" => { "excerpt_only" => false } }
+      end
+
+      it "should be at the end of summary" do
+        expect(contents).to_not include '<a href'
+      end
+    end
   end
 
   context "with feed.posts_limit set to 2" do

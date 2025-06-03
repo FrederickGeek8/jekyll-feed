@@ -216,6 +216,23 @@ feed:
 The same flag can be used directly in post file. It will disable `<content>` tag for selected post.
 Settings in post file have higher priority than in config file.
 
+## Summary Link Text
+
+By default, the `<summary>` portion of the Atom feed does not link back to the original post in the situation where `excerpt_only` is enabled. By setting the `read_more_text` parameter in `_config.yml`, you can style a link to be placed at the end of the summary.
+
+``` yml
+feed:
+  read_more_text: 'Read the full blog post &#x2192;'
+```
+would render
+
+``` html
+<summary type="html">
+<!--Summary of post--><br><a href="{{ post.url | absolute_url }}">Read the full blog post &#x2192;</a>
+</summary>
+```
+
+
 ## Tags
 
 To automatically generate feeds for each tag you apply to your posts you can add a tags setting to your config:
