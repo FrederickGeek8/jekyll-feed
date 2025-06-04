@@ -20,6 +20,8 @@ Lint/EmptyInPattern:
 Metrics/AbcSize:
   IgnoredMethods:
   - generate # in generator.rb
+Metrics/CyclomaticComplexity:
+  Max: 8
 
 Naming/InclusiveLanguage:
   Enabled: false
