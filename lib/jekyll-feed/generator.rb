@@ -106,7 +106,7 @@ module JekyllFeed
       tags_pool.each do |tag|
         # allow only tags with basic alphanumeric characters and underscore to keep
         # feed path simple.
-        next if %r![^a-zA-Z0-9_]!.match?(tag)
+        next if %r![^a-zA-Z0-9_\-]!.match?(tag)
 
         Jekyll.logger.info "Jekyll Feed:", "Generating feed for posts tagged #{tag}"
         path = "#{tags_path}#{tag}.xml"
