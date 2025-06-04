@@ -47,7 +47,15 @@ module JekyllFeed
     # WIll return `/feed/collection.xml` for other collections
     # Will return `/feed/collection/category.xml` for other collection categories
     def feed_path(collection: "posts", category: nil)
-      prefix = collection == "posts" ? "/feed" : "/feed/#{collection}"
+      prefix = case collection
+               when "posts"
+                 "/feed"
+               when %r!(.*)\|(.*)!
+                 "/feed_w_#{Regexp.last_match(2)}"
+               else
+                 "/feed/#{collection}"
+               end
+
       return "#{prefix}/#{category}.xml" if category
 
       collections.dig(collection, "path") || "#{prefix}.xml"
@@ -68,9 +76,16 @@ module JekyllFeed
                      end
 
       @collections = normalize_posts_meta(@collections)
-      @collections.each_value do |meta|
+
+      # X-collections to add
+      to_add = {}
+      @collections.each do |name, meta|
         meta["categories"] = (meta["categories"] || []).to_set
+
+        # Check for X-collections and merge, if appropriate, with 'posts'
+        to_add["posts|#{name}"] = { "is_xinclude" => meta["xinclude"], "categories" => [] } if meta.key?("xinclude")
       end
+      @collections.merge!(to_add)
 
       @collections
     end
