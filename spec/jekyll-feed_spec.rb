@@ -367,7 +367,7 @@ describe(JekyllFeed) do
     it "generates the feed correctly" do
       expect(entry_with_single_category.categories.map(&:term)).to eql(%w(news))
       expect(entry_with_multiple_categories.categories.map(&:term)).to eql(%w(first second third))
-      expect(entry_with_multiple_categories_and_tags.categories.map(&:term)).to eql(["updates", "jekyll", "\"/><VADER>", "test"])
+      expect(entry_with_multiple_categories_and_tags.categories.map(&:term)).to eql(["updates", "jekyll", "\"/><vader>", "test"])
     end
   end
 
