@@ -141,7 +141,8 @@ module JekyllFeed
           "xsl"        => file_exists?("feed.xslt.xml"),
           "collection" => collection,
           "category"   => category,
-          "tags"       => tags
+          "tags"       => tags,
+          "by_tag"     => tags.is_a?(String) ? tags : nil
         )
         file.output
       end

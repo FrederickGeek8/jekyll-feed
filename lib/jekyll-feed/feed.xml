@@ -23,8 +23,12 @@
     {% assign title = title | append: " | " | append: collection_name %}
   {% endif %}
   {% if page.category %}
-    {% assign category = page.category | capitalize %}
-    {% assign title = title | append: " | " | append: category %}
+    {% assign category = page.category %}
+    {% assign title = title | append: " | " | append: category | append: " Category" %}
+  {% endif %}
+  {% if page.by_tag %}
+    {% assign category = page.by_tag | capitalize %}
+    {% assign title = title | append: " | " | append: category | append: " Tag" %}
   {% endif %}
 
   {% if title %}
