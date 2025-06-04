@@ -546,6 +546,37 @@ describe(JekyllFeed) do
         }
       end
 
+      context "with xinclude tag" do
+        let(:overrides) do
+          {
+            "collections" => {
+              "collection" => {
+                "output" => true,
+              },
+            },
+            "feed"        => {
+              "collections" => {
+                "collection" => {
+                  "xinclude" => true,
+                },
+              },
+            },
+          }
+        end
+
+        let(:feed) { File.read(dest_dir("feed_w_collection.xml")) }
+
+        it "outputs a feed_w_cat combined feed" do
+          expect(Pathname.new(dest_dir('feed_w_collection.xml'))).to exist
+          # Check for proper title
+          expect(feed).to include '<title type="html">My awesome site | Posts with Collection</title>'
+          # Check for collection post
+          expect(feed).to include '<title type="html">Collection Category Doc</title>'
+          # Check for posts post
+          expect(feed).to include '<title type="html">The plugin will properly strip newlines.</title>'
+        end
+      end
+
       it "should write to the custom path" do
         expect(Pathname.new(dest_dir("custom.xml"))).to exist
         expect(Pathname.new(dest_dir("feed/collection.xml"))).to_not exist

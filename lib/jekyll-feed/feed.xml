@@ -10,9 +10,17 @@
   <id>{{ page.url | absolute_url | xml_escape }}</id>
 
   {% assign title = site.title | default: site.name %}
+
+  {% assign collections = page.collection | split: "|" %}
+
   {% if page.collection != "posts" %}
-    {% assign collection = page.collection | capitalize %}
-    {% assign title = title | append: " | " | append: collection %}
+    {% assign collection_names = "" | split: "," %}
+    {% for collection in collections %}
+      {% assign collection_name = collection | capitalize %}
+      {% assign collection_names = collection_names | push: collection_name %}
+    {% endfor %}
+    {% assign collection_name = collection_names | join: " with " %}
+    {% assign title = title | append: " | " | append: collection_name %}
   {% endif %}
   {% if page.category %}
     {% assign category = page.category | capitalize %}
@@ -58,7 +66,10 @@
   {% if page.tags %}
     {% assign posts = site.tags[page.tags] %}
   {% else %}
-    {% assign posts = site[page.collection] %}
+    {% assign posts = "" | split: "," %}
+    {% for collection in collections %}
+      {% assign posts = posts | concat: site[collection] %}
+    {% endfor %}
   {% endif %}
   {% if page.category %}
     {% assign posts = posts | where: "categories", page.category %}
